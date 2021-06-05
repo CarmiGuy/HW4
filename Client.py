@@ -4,10 +4,8 @@ import socket
 class Client:
     def __init__(self, addr):
         self.addr = addr
-
-    def connect(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect(self.addr)
+        self.socket.connect(addr)
 
     def send_recv(self, msg):
         print('Client sent to ' + str(self.addr) + ': ' + msg)

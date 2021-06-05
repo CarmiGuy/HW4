@@ -7,7 +7,7 @@ PORT = 80       # Port to listen on (non-privileged ports are > 1023)
 
 
 def choose_server():
-    return servers_connections[0]
+    return c1
 
 
 def handle_client(conn, addr):
@@ -37,7 +37,8 @@ def run():
 
 if __name__ == "__main__":
     addrList = [("192.168.0.101", 80), ("192.168.0.102", 80), ("192.168.0.103", 80)]
-    servers_connections = [Client(addr) for addr in addrList]
-    for server_conn in servers_connections:
-        server_conn.connect()
+    #servers_connections = [Client(addr) for addr in addrList]
+    c1 = Client(addrList[0])
+    c2 = Client(addrList[1])
+    c3 = Client(addrList[2])
     #run()
