@@ -11,18 +11,18 @@ def choose_server():
 
 
 def handle_client(conn, addr):
-    with conn:
-        print('Connected by', addr)
-        data = conn.recv(1024).decode()
-        if data:
-            print('LB received from ' + str(addr) + ': ' + data)
-            # msg_type = data[0]
-            # msg_len = data[1]
+    print('Connected by', addr)
+    data = conn.recv(1024).decode()
+    if data:
+        print('LB received from ' + str(addr) + ': ' + data)
+        # msg_type = data[0]
+        # msg_len = data[1]
 
-            connection = choose_server()
-            print('LB sent to ' + str(connection.addr) + ': ' + data)
-            msg = connection.send_recv(data)
-            conn.send(msg.encode())
+        connection = choose_server()
+        print('LB sent to ' + str(connection.addr) + ': ' + data)
+        msg = connection.send_recv(data)
+        conn.send(msg.encode())
+    conn.close()
 
 
 def run():
