@@ -28,7 +28,7 @@ def handle_client(conn, addr):
 def run():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
-    s.listen()
+    s.listen(10)
     while True:
         conn, addr = s.accept()
         client_thraed = threading.Thread(target=handle_client, kwargs={"conn": conn, "addr": addr})
