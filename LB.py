@@ -4,7 +4,7 @@ import threading
 from datetime import timedelta
 
 HOST = '10.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 80       # Port to listen on (non-privileged ports are > 1023)
+PORT = 80  # Port to listen on (non-privileged ports are > 1023)
 
 
 def choose_server(msg_type, msg_len):
@@ -16,7 +16,8 @@ def choose_server(msg_type, msg_len):
     elif msg_type == 'P':
         execution_times = [msg_len, msg_len, 2 * msg_len]
     current_times = [server.finish_time for server in servers_connections]
-    finish_times = [current + timedelta(seconds=execution) for execution, current in zip(execution_times, current_times)]
+    finish_times = [current + timedelta(seconds=execution) for execution, current in
+                    zip(execution_times, current_times)]
     min_index = 0
     min_value = finish_times[0]
     for i in range(1, len(finish_times)):
@@ -42,7 +43,12 @@ def handle_client(conn, addr):
 
 def run():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((HOST, PORT))
+    try:
+        s.bind((HOST, PORT))
+    except Exception as e:
+        s.close()
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((HOST, PORT))
     s.listen(10)
     while True:
         conn, addr = s.accept()
