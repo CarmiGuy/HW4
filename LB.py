@@ -41,4 +41,4 @@ if __name__ == "__main__":
     c1 = Client(addrList[0])
     c2 = Client(addrList[1])
     c3 = Client(addrList[2])
-    #run()
+    run()
