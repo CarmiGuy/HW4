@@ -1,13 +1,29 @@
 from Client import Client
 import socket
 import threading
+from datetime import timedelta
 
 HOST = '10.0.0.1'  # Standard loopback interface address (localhost)
 PORT = 80       # Port to listen on (non-privileged ports are > 1023)
 
 
-def choose_server():
-    return servers_connections[0]
+def choose_server(msg_type, msg_len):
+    execution_times = []
+    if msg_type == 'M':
+        execution_times = [2 * msg_len, 2 * msg_len, msg_len]
+    elif msg_type == 'V':
+        execution_times = [msg_len, msg_len, 3 * msg_len]
+    elif msg_type == 'P':
+        execution_times = [msg_len, msg_len, 2 * msg_len]
+    current_times = [server.finish_time for server in servers_connections]
+    finish_times = [current + timedelta(seconds=execution) for execution, current in zip(execution_times, current_times)]
+    min_index = 0
+    min_value = finish_times[0]
+    for i in range(1, len(finish_times)):
+        if finish_times[i] < min_value:
+            min_value = finish_times
+            min_index = i
+    return servers_connections[min_index]
 
 
 def handle_client(conn, addr):
@@ -15,10 +31,9 @@ def handle_client(conn, addr):
     data = conn.recv(1024).decode()
     if data:
         print('LB received from ' + str(addr) + ': ' + data)
-        # msg_type = data[0]
-        # msg_len = data[1]
+        msg_type, msg_len = data[0], int(data[1])
 
-        connection = choose_server()
+        connection = choose_server(msg_type, msg_len)
         print('LB sent to ' + str(connection.addr) + ': ' + data)
         msg = connection.send_recv(data)
         conn.send(msg.encode())

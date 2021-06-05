@@ -1,4 +1,5 @@
 import socket
+from datetime import datetime, timedelta
 
 
 class Client:
@@ -6,10 +7,12 @@ class Client:
         self.addr = addr
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect(addr)
+        self.finish_time = datetime.now()
 
     def send_recv(self, msg):
         print('Client sent to ' + str(self.addr) + ': ' + msg)
         self.socket.send(msg.encode())
+        self.finish_time += timedelta(seconds=int(msg[1]))
         data = self.socket.recv(1024).decode()
         print('Client received from ' + str(self.addr) + ': ' + data)
         return data
