@@ -7,7 +7,7 @@ PORT = 80       # Port to listen on (non-privileged ports are > 1023)
 
 
 def choose_server():
-    return c1
+    return servers_connections[0]
 
 
 def handle_client(conn, addr):
@@ -26,21 +26,16 @@ def handle_client(conn, addr):
 
 
 def run():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, PORT))
-        s.listen()
-        while True:
-            conn, addr = s.accept()
-            client_thraed = threading.Thread(target=handle_client, kwargs={"conn": conn, "addr": addr})
-            client_thraed.start()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((HOST, PORT))
+    s.listen()
+    while True:
+        conn, addr = s.accept()
+        client_thraed = threading.Thread(target=handle_client, kwargs={"conn": conn, "addr": addr})
+        client_thraed.start()
 
 
 if __name__ == "__main__":
     addrList = [("192.168.0.101", 80), ("192.168.0.102", 80), ("192.168.0.103", 80)]
-    #servers_connections = [Client(addr) for addr in addrList]
-    c1 = Client(addrList[0])
-    c2 = Client(addrList[1])
-    c3 = Client(addrList[2])
-    #run()
-    while True:
-        continue
+    servers_connections = [Client(addr) for addr in addrList]
+    run()
