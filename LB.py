@@ -21,7 +21,7 @@ def choose_server(msg_type, msg_len):
     min_value = finish_times[0]
     for i in range(1, len(finish_times)):
         if finish_times[i] < min_value:
-            min_value = finish_times
+            min_value = finish_times[i]
             min_index = i
     return servers_connections[min_index]
 
