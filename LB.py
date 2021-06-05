@@ -40,4 +40,4 @@ if __name__ == "__main__":
     servers_connections = [Client(addr) for addr in addrList]
     for server_conn in servers_connections:
         server_conn.connect()
-    run()
+    #run()
