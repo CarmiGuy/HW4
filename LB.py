@@ -28,7 +28,6 @@ def choose_server(msg_type, msg_len):
 
 
 def handle_client(conn, addr):
-    print('Connected by', addr)
     data = conn.recv(1024).decode()
     if data:
         msg_type, msg_len = data[0], int(data[1])
