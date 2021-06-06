@@ -10,9 +10,9 @@ class Client:
         self.finish_time = datetime.now()
 
     def send_recv(self, msg):
-        print('Client sent to ' + str(self.addr) + ': ' + msg)
+        print('LB sent to server ' + str(self.addr) + ': ' + msg)
         self.socket.send(msg.encode())
         self.finish_time += timedelta(seconds=int(msg[1]))
         data = self.socket.recv(1024).decode()
-        print('Client received from ' + str(self.addr) + ': ' + data)
+        print('LB received from server ' + str(self.addr) + ': ' + data)
         return data

@@ -31,11 +31,11 @@ def handle_client(conn, addr):
     print('Connected by', addr)
     data = conn.recv(1024).decode()
     if data:
-        print('LB received from ' + str(addr) + ': ' + data)
+        print('LB received from client ' + str(addr) + ': ' + data)
         msg_type, msg_len = data[0], int(data[1])
 
         connection = choose_server(msg_type, msg_len)
-        print('LB sent to ' + str(connection.addr) + ': ' + data)
+        print('LB sent to client ' + str(connection.addr) + ': ' + data)
         msg = connection.send_recv(data)
         conn.send(msg.encode())
     conn.close()
@@ -44,7 +44,7 @@ def handle_client(conn, addr):
 def run():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((HOST, PORT))
-    s.listen(10)
+    s.listen(5)
     while True:
         conn, addr = s.accept()
         client_thraed = threading.Thread(target=handle_client, kwargs={"conn": conn, "addr": addr})
