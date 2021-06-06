@@ -43,12 +43,7 @@ def handle_client(conn, addr):
 
 def run():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        s.bind((HOST, PORT))
-    except Exception as e:
-        s.close()
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((HOST, PORT))
+    s.bind((HOST, PORT))
     s.listen(10)
     while True:
         conn, addr = s.accept()
