@@ -31,13 +31,11 @@ def handle_client(conn, addr):
     print('Connected by', addr)
     data = conn.recv(1024).decode()
     if data:
-        print('LB received from client ' + str(addr) + ': ' + data)
         msg_type, msg_len = data[0], int(data[1])
 
         connection = choose_server(msg_type, msg_len)
         print('LB will send to server ' + str(connection.addr) + ': ' + data + ', that came from ' + str(addr))
         msg = connection.send_recv(data)
-        print('LB sent to client ' + str(addr) + ': ' + msg)
         conn.send(msg.encode())
     conn.close()
 
