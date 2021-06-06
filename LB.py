@@ -35,8 +35,9 @@ def handle_client(conn, addr):
         msg_type, msg_len = data[0], int(data[1])
 
         connection = choose_server(msg_type, msg_len)
-        print('LB sent to client ' + str(connection.addr) + ': ' + data)
+        print('LB will send to server ' + str(connection.addr) + ': ' + data + ', that came from ' + str(addr))
         msg = connection.send_recv(data)
+        print('LB sent to client ' + str(addr) + ': ' + msg)
         conn.send(msg.encode())
     conn.close()
 
